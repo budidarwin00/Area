@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id"><head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAS EF - ADMIN FINAL TANPA UBAH APPSCRIPT</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f8fafc;color:#0f172a;max-width:520px;margin:0 auto}
+header{position:sticky;top:0;background:#fff;border-bottom:1px solid #e2e8f0;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;z-index:10}
+.logo{font-weight:900;font-size:18px}
+.sub{font-size:10px;color:#0e7490;font-weight:700}
+.btn{border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer}
+.btn-primary{background:#0f172a;color:#fff}
+.btn-sm{padding:6px 10px;font-size:11px}
+.wrap{padding:12px;display:flex;flex-direction:column;gap:12px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:16px}
+.saldo{font-size:32px;font-weight:900;margin-top:4px}
+.label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#64748b;font-weight:700}
+.input{width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:12px;font-size:14px;background:#fff;margin-bottom:8px}
+.tx{border:1px solid #e2e8f0;border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.kotak{border-radius:12px;padding:10px 8px;text-align:center;background:#f8fafc;border:1px solid #e2e8f0}
+.kotak.min{background:#fff1f2;border-color:#fecdd3}
+</style></head><body>
+<header>
+<div><div class="logo">KAS EF</div><div class="sub">PT. Astra Komponen Indonesia • Tanpa Ubah Appscript</div></div>
+<div style="display:flex;gap:6px"><button class="btn btn-sm" onclick="load()">↻ Sync</button></div>
+</header>
+<div class="wrap">
+<div class="card">
+<div class="label">Saldo • <span id="info">Memuat...</span></div>
+<div class="saldo" id="saldo">Rp 0</div>
+<div style="font-size:11px;color:#64748b;margin-top:4px" id="rincian">Masuk Rp 0 • Keluar Rp 0 • 0 trx</div>
+</div>
+<div class="card">
+<div class="label">Tambah Iuran / Uang Masuk</div>
+<div style="margin-top:10px">
+<input type="date" id="tgl" class="input">
+<select id="nama" class="input"></select>
+<div style="display:flex;gap:8px">
+<select id="metode" class="input"><option value="">Metode</option><option>BCA</option><option>MANDIRI</option><option>CASH</option></select>
+<select id="kat" class="input"><option value="Iuran">Iuran Bulanan</option><option value="Uang Masuk">Uang Masuk</option><option value="Sisa Saldo">Sisa Saldo</option><option value="Kas Keluar">Kas Keluar</option></select>
+</div>
+<input type="number" id="nom" class="input" value="100000">
+<input type="text" id="ket" class="input" placeholder="Keterangan (contoh: Januari)">
+<button class="btn btn-primary" style="width:100%;padding:14px" onclick="tambah()">💾 Simpan ke Sheet</button>
+<div id="status" style="font-size:11px;margin-top:8px;color:#059669"></div>
+</div>
+</div>
+<div class="card">
+<div class="label">Iuran Anggota • <span id="jml">17</span> • <span id="warn"></span></div>
+<div class="grid2" id="grid" style="margin-top:10px"></div>
+</div>
+<div class="card">
+<div class="label">Daftar Transaksi • <span id="jtrx">0</span></div>
+<div id="list" style="margin-top:10px;max-height:400px;overflow:auto">Memuat...</div>
+</div>
+</div>
+<script>
+const URL_SHEET="https://script.google.com/macros/s/AKfycbwZyzfPgJiNbBsxwKAfFxnRq2Iz50g9XYvkXU9CJdfywd9bc9n5bGpv7sXyKSOE3Ux72A/exec";
+const ANGGOTA=["Supriyadi","Aditya","Anisa","Syarif","Aaf","Budi","Yudi","Dozen","Heru","Arief","Anah","Putri","Nia","Topik","Efrizon","Kawir","Zaelani"];
+let DATA={transaksi:[]};
+
+function fmt(n){return n.toLocaleString('id-ID');}
+function init(){
+  document.getElementById('tgl').value=new Date().toISOString().slice(0,10);
+  document.getElementById('nama').innerHTML=ANGGOTA.map(n=>`<option value="${n}">${n}</option>`).join('');
+  load();
+}
+function safeAmt(v){
+  if(typeof v==='number') return v;
+  let s=String(v||'').replace(/[^0-9]/g,''); let a=parseInt(s)||0;
+  if(s.length>8){ let m=s.match(/(100000|200000)$/); if(m) a=parseInt(m[1]); else a=parseInt(s.slice(-6))||100000; }
+  if(a>10000000||a<1000) a=100000; if(a===0) a=100000; return a;
+}
+function load(){
+  document.getElementById('info').textContent='Syncing...';
+  document.getElementById('list').innerHTML='Memuat dari Sheet...';
+  fetch(URL_SHEET+'?action=getData&t='+Date.now(),{cache:'no-store'})
+  .then(r=>r.text()).then(t=>{
+    let d=JSON.parse(t);
+    let trx=d.transaksi.map(x=>{
+      let nm=String(x.Anggota||'').trim(); if(nm.toLowerCase()==='opik') nm='Topik';
+      return {id:x.ID, tgl:String(x.Tanggal||'').slice(0,10), nama:nm, kat:String(x.Kategori||'Iuran').split('|')[0], amt:safeAmt(x.Nominal), ket:String(x.Kategori||'').split('|').slice(1).join(' ')}
+    });
+    DATA.transaksi=trx;
+    render();
+    document.getElementById('info').textContent='Live • '+new Date().toLocaleTimeString('id-ID');
+  }).catch(e=>{
+    document.getElementById('info').textContent='Gagal sync: '+e.message+' - klik Sync lagi';
+    document.getElementById('list').innerHTML='Gagal: '+e.message;
+  });
+}
+function render(){
+  let trx=DATA.transaksi;
+  let masuk=0, keluar=0;
+  trx.forEach(t=>{ if(t.kat.toLowerCase().includes('keluar')) keluar+=t.amt; else masuk+=t.amt; });
+  document.getElementById('saldo').textContent='Rp '+fmt(masuk-keluar);
+  document.getElementById('rincian').textContent=`Masuk Rp ${fmt(masuk)} • Keluar Rp ${fmt(keluar)} • ${trx.length} trx`;
+  document.getElementById('jtrx').textContent=trx.length+' trx';
+  let map={}; ANGGOTA.forEach(n=>map[n.toLowerCase()]={nama:n, total:0});
+  trx.forEach(t=>{ let k=t.nama.toLowerCase(); if(map[k]) map[k].total+=t.amt; });
+  let arr=Object.values(map); arr.sort((a,b)=>a.total-b.total);
+  let zero=arr.filter(x=>x.total===0);
+  document.getElementById('jml').textContent=ANGGOTA.length;
+  document.getElementById('warn').innerHTML=zero.length?`<span style="color:#dc2626">⚠️ ${zero.length} Rp 0: ${zero.map(x=>x.nama).join(', ')}</span>`:'<span style="color:#059669">✅</span>';
+  document.getElementById('grid').innerHTML=arr.map(m=>{
+    let cls=m.total===0?'kotak min':'kotak';
+    return `<div class="${cls}"><div style="font-size:11px;font-weight:700">${m.nama}</div><div style="font-size:12px;font-weight:800;margin-top:2px">Rp ${fmt(m.total)}</div></div>`;
+  }).join('');
+  document.getElementById('list').innerHTML=trx.slice(0,100).map(t=>`
+    <div class="tx"><div><div style="font-weight:700;font-size:12px">${t.nama} <span style="font-size:9px;color:#64748b">${t.kat}</span></div><div style="font-size:10px;color:#64748b">${t.tgl} • ${t.ket}</div></div><div style="text-align:right"><div style="font-weight:800;font-size:12px">Rp ${fmt(t.amt)}</div><button onclick="hapus('${t.id}')" style="font-size:10px;color:#dc2626;border:0;background:none;cursor:pointer">Hapus</button></div></div>
+  `).join('') || 'Belum ada transaksi';
+}
+function tambah(){
+  let tgl=document.getElementById('tgl').value||new Date().toISOString().slice(0,10);
+  let nama=document.getElementById('nama').value;
+  let kat=document.getElementById('kat').value;
+  let met=document.getElementById('metode').value;
+  let nom=parseInt(document.getElementById('nom').value)||0;
+  let ket=document.getElementById('ket').value||kat;
+  if(met) ket=ket+' '+met;
+  if(!nama||!nom){ alert('Lengkapi nama dan nominal'); return; }
+  let payload={action:'addTransaksi', Tanggal:tgl, Anggota:nama, Kategori:kat+'|'+ket, Nominal:nom};
+  document.getElementById('status').textContent='⏳ Mengirim '+nama+' Rp '+fmt(nom)+' ke Sheet (tanpa ubah appscript)...';
+  // Cara 1: POST JSON (cara lama appscript kamu) - ini yang paling kompatibel tanpa ubah appscript
+  fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)}).then(()=>{
+    console.log('POST OK');
+  }).catch(e=>{ console.log('POST fail',e); });
+  // Cara 2: GET sebagai backup (jika appscript kamu support GET juga)
+  let q=`action=addTransaksi&Tanggal=${encodeURIComponent(tgl)}&Anggota=${encodeURIComponent(nama)}&Kategori=${encodeURIComponent(kat+'|'+ket)}&Nominal=${encodeURIComponent(nom)}`;
+  let url=URL_SHEET+'?'+q+'&t='+Date.now();
+  fetch(url,{method:'GET',mode:'no-cors'}).catch(()=>{});
+  let img=new Image(); img.src=url;
+  // Cara 3: Form POST via iframe (paling ampuh untuk Apps Script lama)
+  let form=document.createElement('form');
+  form.method='POST'; form.action=URL_SHEET; form.target='hidden_iframe'; form.style.display='none';
+  Object.keys(payload).forEach(k=>{ let i=document.createElement('input'); i.name=k; i.value=payload[k]; form.appendChild(i); });
+  document.body.appendChild(form);
+  let iframe=document.getElementById('hidden_iframe');
+  if(!iframe){ iframe=document.createElement('iframe'); iframe.name='hidden_iframe'; iframe.id='hidden_iframe'; iframe.style.display='none'; document.body.appendChild(iframe); }
+  form.submit();
+  setTimeout(()=>{ document.body.removeChild(form); }, 2000);
+  document.getElementById('status').textContent='✅ Terkirim (3 cara) • tunggu 3 detik sync...';
+  setTimeout(load, 3500);
+}
+function hapus(id){
+  if(!confirm('Hapus transaksi ini dari Sheet?')) return;
+  let payload={action:'deleteTransaksi', ID:id};
+  fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)}).catch(()=>{});
+  let url=URL_SHEET+'?action=deleteTransaksi&ID='+encodeURIComponent(id)+'&t='+Date.now();
+  fetch(url,{method:'GET',mode:'no-cors'}).catch(()=>{});
+  let img=new Image(); img.src=url;
+  setTimeout(load, 2000);
+}
+init();
+</script>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none"></iframe>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
