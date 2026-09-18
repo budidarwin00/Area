@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id"><head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAS EF - ADMIN FINAL FIX</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f8fafc;color:#0f172a;max-width:520px;margin:0 auto}
+header{position:sticky;top:0;background:#fff;border-bottom:1px solid #e2e8f0;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;z-index:10}
+.logo{font-weight:900;font-size:18px}
+.btn{border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer}
+.btn-primary{background:#0f172a;color:#fff}
+.btn-danger{background:#fef2f2;color:#dc2626;border-color:#fecaca}
+.btn-sm{padding:6px 10px;font-size:11px}
+.wrap{padding:12px;display:flex;flex-direction:column;gap:12px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:16px}
+.input{width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:12px;font-size:14px;background:#fff;margin-bottom:8px}
+.textarea{width:100%;min-height:80px;padding:12px;border:1px dashed #94a3b8;border-radius:12px;font-size:13px;font-family:monospace;background:#f8fafc}
+.tx{border:1px solid #e2e8f0;border-radius:12px;padding:10px 12px;margin-bottom:6px;background:#f8fafc;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.kotak{border-radius:12px;padding:10px 8px;text-align:center;background:#f8fafc;border:1px solid #e2e8f0}
+.kotak.min{background:#fff1f2}
+.wa-item{display:flex;justify-content:space-between;padding:8px 10px;border-radius:10px;margin-bottom:6px;font-size:11px;border:1px solid #e2e8f0;background:#f8fafc}
+.wa-item.ok{background:#ecfdf5}
+.bank{display:inline-flex;padding:2px 6px;border-radius:999px;font-size:8px;font-weight:800;margin-left:4px} .bca{background:#dbeafe;color:#1e40af} .mandiri{background:#fef9c3;color:#713f12} .cash{background:#dcfce7;color:#166534}
+.bank-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;margin-bottom:6px}
+.sync-dot{width:8px;height:8px;border-radius:99px;background:#22c55e;display:inline-block;margin-right:6px}
+.sync-dot.off{background:#ef4444}
+.sync-dot.load{background:#eab308;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+</style></head><body>
+<header>
+<div class="logo">KAS EF <span id="dot" class="sync-dot load"></span></div>
+<div style="display:flex;gap:6px"><button class="btn btn-sm" onclick="load(true)">↻ Sync</button></div>
+</header>
+<div class="wrap">
+<div class="card">
+<div style="font-size:32px;font-weight:900" id="saldo">Rp 0</div>
+<div style="font-size:11px;color:#64748b;margin-top:4px" id="rincian">Memuat...</div>
+<div id="status" style="font-size:11px;margin-top:8px;color:#059669"></div>
+</div>
+
+<div class="card">
+<textarea id="wa-paste" class="textarea" placeholder="Paste WA... Nia tf mandiri, Aditya BCA, Putri cash"></textarea>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px">
+<input type="date" id="wa-tanggal" class="input" style="margin:0;padding:8px;font-size:11px">
+<select id="wa-bulan" class="input" style="margin:0;padding:8px;font-size:11px"><option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option></select>
+<select id="wa-tahun" class="input" style="margin:0;padding:8px;font-size:11px"><option>2024</option><option>2025</option><option selected>2026</option></select>
+</div>
+<div style="display:flex;gap:8px">
+<button class="btn btn-primary" style="flex:1" onclick="parseWA()">Deteksi</button>
+<button class="btn" id="wa-save-btn" style="display:none;flex:1;background:#059669;color:#fff" onclick="saveWA()">Simpan (WA)</button>
+</div>
+<div id="wa-preview" style="margin-top:10px"></div>
+</div>
+
+<div class="card">
+<select id="nama" class="input"></select>
+<div style="display:flex;gap:8px">
+<select id="metode" class="input"><option value="">Metode</option><option>BCA</option><option>MANDIRI</option><option>CASH</option></select>
+<select id="kat" class="input"><option value="Iuran">Iuran</option><option value="Uang Masuk">Uang Masuk</option><option value="Sisa Saldo">Sisa Saldo</option><option value="Kas Keluar">Kas Keluar</option></select>
+</div>
+<input type="date" id="tgl" class="input">
+<input type="number" id="nom" class="input" value="100000">
+<input type="text" id="ket" class="input" placeholder="Keterangan">
+<button class="btn btn-primary" style="width:100%;padding:14px" onclick="tambah()">Simpan Manual</button>
+</div>
+
+<div class="card">
+<div class="grid2" id="grid"></div>
+</div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:11px;font-weight:700">Transaksi Terbaru di Atas</div><button class="btn btn-sm btn-danger" onclick="hapusDobels()">Hapus Dobel</button></div>
+<div id="list" style="max-height:500px;overflow:auto"></div>
+</div>
+
+<div class="card">
+<div style="font-size:11px;font-weight:700;margin-bottom:8px">Bank</div>
+<div id="bankList"></div>
+<div style="display:flex;gap:6px;margin-top:8px">
+<select id="b-bank" class="input" style="margin:0"><option>BCA</option><option>MANDIRI</option></select>
+<input type="text" id="b-no" class="input" placeholder="No Rek" style="margin:0">
+<input type="text" id="b-own" class="input" placeholder="Pemilik" style="margin:0">
+</div>
+<button class="btn btn-primary btn-sm" style="margin-top:8px;width:100%" onclick="tambahBank()">Tambah Bank</button>
+</div>
+
+</div>
+<script>
+const URL_SHEET="https://script.google.com/macros/s/AKfycbwZyzfPgJiNbBsxwKAfFxnRq2Iz50g9XYvkXU9CJdfywd9bc9n5bGpv7sXyKSOE3Ux72A/exec";
+const ANGGOTA=['Supriyadi','Aditya','Anisa','Syarif','Aaf','Budi','Yudi','Dozen','Heru','Arief','Anah','Putri','Nia','Topik','Eka','Neli','Zaelani'];
+let DATA={transaksi:[], bank:[]}; let waParsed=[];
+
+function fmt(n){return n.toLocaleString('id-ID');}
+function setDot(s){ let d=document.getElementById('dot'); d.className='sync-dot '+s; }
+function init(){
+  document.getElementById('tgl').value=new Date().toISOString().slice(0,10);
+  document.getElementById('wa-tanggal').value=new Date().toISOString().slice(0,10);
+  document.getElementById('wa-bulan').value=new Date().getMonth()+1;
+  document.getElementById('nama').innerHTML=ANGGOTA.map(n=>`<option value="${n}">${n}</option>`).join('');
+  // load local cache dulu biar cepat
+  try{
+    let c=localStorage.getItem('kas_ef_cache');
+    if(c){ let j=JSON.parse(c); if(j.transaksi && j.transaksi.length){ DATA.transaksi=j.transaksi; render(); setDot('off'); document.getElementById('rincian').textContent+=' • cache'; } }
+    let bc=localStorage.getItem('kas_ef_bank');
+    if(bc){ DATA.bank=JSON.parse(bc); }
+  }catch(e){}
+  load();
+}
+function safeAmt(v){ if(typeof v==='number') return v; let s=String(v||'').replace(/[^0-9]/g,''); let a=parseInt(s)||0; if(a>10000000||a<1000) a=100000; return a; }
+function saveCache(){ try{ localStorage.setItem('kas_ef_cache', JSON.stringify({transaksi:DATA.transaksi, time:Date.now()})); localStorage.setItem('kas_ef_bank', JSON.stringify(DATA.bank)); }catch(e){} }
+
+function load(force=false){
+  setDot('load');
+  document.getElementById('rincian').textContent='Syncing...';
+  let url=URL_SHEET+'?action=getData&t='+Date.now();
+  // fetch cepat dengan timeout 8 detik
+  let ctrl=new AbortController(); let to=setTimeout(()=>ctrl.abort(), 8000);
+  fetch(url,{cache:'no-store', signal:ctrl.signal}).then(r=>r.text()).then(t=>{
+    clearTimeout(to);
+    let d=JSON.parse(t);
+    let raw=d.transaksi.map((x,idx)=>{
+      let nm=String(x.Anggota||'').trim(); if(nm.toLowerCase()==='opik') nm='Topik'; if(nm.toLowerCase()==='eka iswanto') nm='Eka';
+      return {id:x.ID||('id_'+idx), idx:idx, tgl:String(x.Tanggal||'').slice(0,10), nama:nm, kat:String(x.Kategori||'Iuran').split('|')[0], amt:safeAmt(x.Nominal), ket:String(x.Kategori||'').split('|').slice(1).join(' '), rawDate:x.Tanggal||''}
+    });
+    raw.sort((a,b)=>{
+      let da=new Date(a.rawDate||a.tgl); let db=new Date(b.rawDate||b.tgl);
+      if(!isNaN(db) && !isNaN(da) && db-da!==0) return db-da;
+      return b.idx - a.idx;
+    });
+    DATA.transaksi=raw;
+    // bank
+    if(d.bank && d.bank.length){
+      DATA.bank=d.bank.map(r=>({id:r.ID||r.id||('b_'+Math.random()), bank:r.Bank||r.bank||'BCA', no:r.NoRek||r.Rekening||r.no||'', own:r.Pemilik||r.owner||'Eka Iswanto'})).filter(b=>b.no);
+    }
+    if(DATA.bank.length===0){
+      try{ let bc=localStorage.getItem('kas_ef_bank'); if(bc){ DATA.bank=JSON.parse(bc); } }catch(e){}
+      if(DATA.bank.length===0) DATA.bank=[{id:'b1', bank:'BCA', no:'6830747280', own:'Eka Iswanto'},{id:'b2', bank:'MANDIRI', no:'1570005764080', own:'Eka Iswanto'}];
+    }
+    render(); saveCache(); setDot('');
+    document.getElementById('status').textContent='Sync OK '+new Date().toLocaleTimeString();
+  }).catch(e=>{
+    clearTimeout(to);
+    setDot('off');
+    document.getElementById('status').textContent='Sync gagal/offline - pakai cache lokal';
+    // tetap render dari cache
+    render();
+  });
+}
+function render(){
+  let trx=DATA.transaksi; let masuk=0,keluar=0; trx.forEach(t=>{ if(t.kat.toLowerCase().includes('keluar')) keluar+=t.amt; else masuk+=t.amt; });
+  document.getElementById('saldo').textContent='Rp '+fmt(masuk-keluar);
+  document.getElementById('rincian').textContent=`Masuk Rp ${fmt(masuk)} • Keluar Rp ${fmt(keluar)} • ${trx.length} trx • terbaru di atas`;
+  let map={}; ANGGOTA.forEach(n=>map[n.toLowerCase()]={nama:n,total:0}); trx.forEach(t=>{ let k=t.nama.toLowerCase(); if(map[k]) map[k].total+=t.amt; });
+  let arr=Object.values(map); arr.sort((a,b)=>a.total-b.total);
+  document.getElementById('grid').innerHTML=arr.map(m=>`<div class="kotak ${m.total===0?'min':''}"><div style="font-size:11px;font-weight:700">${m.nama}</div><div style="font-size:12px;font-weight:800">Rp ${fmt(m.total)}</div></div>`).join('');
+  document.getElementById('list').innerHTML=trx.slice(0,100).map(t=>`<div class="tx"><div><b>${t.nama}</b> <span style="font-size:9px;color:#64748b">${t.kat}</span><div style="font-size:10px;color:#64748b">${t.tgl} • ${t.ket}</div></div><div style="text-align:right"><div style="font-weight:800">Rp ${fmt(t.amt)}</div><button onclick="hapus('${t.id}')" style="font-size:10px;color:#dc2626;border:0;background:none;cursor:pointer">Hapus</button></div></div>`).join('') || 'Kosong';
+  document.getElementById('bankList').innerHTML=DATA.bank.map(b=>`<div class="bank-item"><div><div style="font-size:10px;color:#64748b">${b.bank} • ${b.own}</div><div style="font-family:monospace;font-weight:800">${b.no}</div></div><div style="display:flex;gap:6px"><button class="btn btn-sm" onclick="copyBank('${b.no}')">Copy</button><button class="btn btn-sm btn-danger" onclick="hapusBank('${b.id}')">Hapus</button></div></div>`).join('') || 'Belum ada';
+}
+
+// KIRIM YANG PASTI MASUK + OPTIMISTIC UPDATE
+function kirim(payload, optimisticFn){
+  // 1. Optimistic update dulu biar saldo langsung bertambah
+  if(optimisticFn) optimisticFn();
+  render(); saveCache();
+  // 2. Kirim ke Sheet 3 cara
+  let form=document.createElement('form'); form.method='POST'; form.action=URL_SHEET; form.target='hidden_iframe'; form.style.display='none';
+  Object.keys(payload).forEach(k=>{ let i=document.createElement('input'); i.name=k; i.value=payload[k]; form.appendChild(i); });
+  document.body.appendChild(form); form.submit(); setTimeout(()=>{ try{document.body.removeChild(form);}catch(e){} },2000);
+  let q=Object.keys(payload).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(payload[k])).join('&');
+  let url=URL_SHEET+'?'+q+'&t='+Date.now();
+  // Image hack paling cepat untuk Apps Script
+  let img=new Image(); img.src=url;
+  fetch(url,{method:'GET',mode:'no-cors'}).catch(()=>{});
+  fetch(URL_SHEET,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)}).catch(()=>{});
+  document.getElementById('status').textContent='Terkirim - sync 2 detik...';
+  setDot('load');
+  setTimeout(()=>load(), 2500);
+}
+
+function tambah(){
+  let tgl=document.getElementById('tgl').value||new Date().toISOString().slice(0,10);
+  let nama=document.getElementById('nama').value; let kat=document.getElementById('kat').value; let met=document.getElementById('metode').value; let nom=parseInt(document.getElementById('nom').value)||0; let ket=document.getElementById('ket').value||kat; if(met) ket=ket+' '+met;
+  if(!nama||!nom){ alert('Lengkapi nama & nominal'); return; }
+  let newId='tmp_'+Date.now();
+  kirim({action:'addTransaksi', Tanggal:tgl, Anggota:nama, Kategori:kat+'|'+ket, Nominal:nom}, ()=>{
+    // optimistic: tambah langsung di depan (terbaru)
+    DATA.transaksi.unshift({id:newId, idx:999999, tgl:tgl, nama:nama, kat:kat, amt:nom, ket:ket, rawDate:tgl});
+  });
+}
+function hapus(id){
+  if(!confirm('Hapus transaksi ini?')) return;
+  kirim({action:'deleteTransaksi', ID:id, id:id}, ()=>{
+    DATA.transaksi=DATA.transaksi.filter(t=>String(t.id)!==String(id));
+  });
+}
+function hapusDobels(){
+  let seen={}; let dob=[]; DATA.transaksi.forEach(t=>{ let k=(t.nama+'|'+t.ket+'|'+t.amt).toLowerCase(); if(seen[k]) dob.push(t); else seen[k]=true; });
+  if(!dob.length){ alert('Tidak ada dobel'); return; }
+  if(!confirm('Hapus '+dob.length+' dobel?')) return;
+  dob.forEach(d=>{
+    kirim({action:'deleteTransaksi', ID:d.id, id:d.id}, ()=>{
+      DATA.transaksi=DATA.transaksi.filter(t=>String(t.id)!==String(d.id));
+    });
+  });
+}
+function tambahBank(){
+  let bank=document.getElementById('b-bank').value; let no=document.getElementById('b-no').value.trim(); let own=document.getElementById('b-own').value.trim()||'Eka Iswanto';
+  if(!no){ alert('Isi No Rek'); return; }
+  let newId='b_'+Date.now();
+  kirim({action:'addBank', Bank:bank, NoRek:no, Pemilik:own}, ()=>{
+    DATA.bank.push({id:newId, bank, no, own});
+  });
+  document.getElementById('b-no').value=''; document.getElementById('b-own').value='';
+}
+function hapusBank(id){
+  if(!confirm('Hapus bank ini?')) return;
+  kirim({action:'deleteBank', ID:id, id:id}, ()=>{
+    DATA.bank=DATA.bank.filter(b=>String(b.id)!==String(id));
+  });
+}
+function copyBank(no){ navigator.clipboard.writeText(no).then(()=>alert('Copy: '+no)); }
+
+function extractMetode(l){l=l.toLowerCase(); if(l.includes('bca')) return 'BCA'; if(l.includes('mandiri')) return 'MANDIRI'; if(l.includes('cash')) return 'CASH'; return '';}
+function extractName(line){let c=line.replace(/(tf|transfer|cash|bca|mandiri|bri|bni|100k|200k|Rp|\d+\.\d+)/gi,'').trim(); c=c.replace(/[^a-zA-Z ]/g,' ').replace(/\s+/g,' ').trim(); c=c.replace(/^pak\s+/i,''); let p=c.split(' ').filter(x=>x.length>1); if(!p.length) return ''; let name=p.slice(0,2).join(' '); return name.split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(' ');}
+function extractAmt(line){let m=line.match(/(\d+)k/i); if(m) return parseInt(m[1])*1000; let m2=line.match(/(\d{3,})/); if(m2) return parseInt(m2[1])||100000; return 100000;}
+function parseWA(){
+  let text=document.getElementById('wa-paste').value; let lines=text.split(/\n/); let seen={}; let res=[];
+  let alias={"pak heru":"Heru","heru":"Heru","opik":"Topik","topik":"Topik","zaelani":"Zaelani","eka iswanto":"Eka","eka":"Eka","neli":"Neli"};
+  lines.forEach(raw=>{let line=raw.trim(); if(!line||line.length<2) return; let name=extractName(line); let amt=extractAmt(line); let met=extractMetode(line); if(name){ let low=name.toLowerCase(); if(alias[low]) name=alias[low]; let k=name.toLowerCase(); if(!seen[k]){seen[k]=true; res.push({name,amt,metode:met,raw:line});}}});
+  let bulan=document.getElementById('wa-bulan'); let tahun=document.getElementById('wa-tahun'); let bulanNames=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']; let bName=bulanNames[parseInt(bulan.value)]; let tVal=tahun.value; let target=(bName+' '+tVal).toLowerCase();
+  waParsed=res.filter(r=>!DATA.transaksi.some(t=> t.nama.toLowerCase()===r.name.toLowerCase() && (t.ket||'').toLowerCase().includes(target)));
+  document.getElementById('wa-preview').innerHTML=waParsed.map(r=>`<div class="wa-item ok"><div><b>${r.name}</b> ${r.metode?'<span class="bank '+r.metode.toLowerCase()+'">'+r.metode+'</span>':''}</div><div>Rp ${fmt(r.amt)}</div></div>`).join('') || 'Tidak ada / sudah bayar';
+  document.getElementById('wa-save-btn').style.display=waParsed.length?'inline-flex':'none';
+}
+function saveWA(){
+  if(!waParsed.length) return;
+  let date=document.getElementById('wa-tanggal').value||new Date().toISOString().slice(0,10);
+  let bulan=document.getElementById('wa-bulan'); let tahun=document.getElementById('wa-tahun'); let bulanNames=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']; let bName=bulanNames[parseInt(bulan.value)]; let tVal=tahun.value; let desc='Iuran '+bName+' '+tVal+' via WA';
+  // optimistic tambah semua
+  let batch=waParsed.slice();
+  batch.forEach(r=>{
+    let full=desc+(r.metode?' '+r.metode:'');
+    kirim({action:'addTransaksi', Tanggal:date, Anggota:r.name, Kategori:'Iuran|'+full, Nominal:r.amt}, ()=>{
+      DATA.transaksi.unshift({id:'tmp_'+Date.now()+Math.random(), idx:999999, tgl:date, nama:r.name, kat:'Iuran', amt:r.amt, ket:full, rawDate:date});
+    });
+  });
+  document.getElementById('wa-preview').innerHTML=`✅ ${batch.length} terkirim - saldo langsung update`; document.getElementById('wa-save-btn').style.display='none'; document.getElementById('wa-paste').value=''; waParsed=[]; render(); saveCache();
+}
+init();
+</script>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none"></iframe>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
