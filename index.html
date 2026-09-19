@@ -1,0 +1,389 @@
+<!DOCTYPE html><html lang="id"><head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>KAS EF - BIRU AQUA MINIMALIS</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(180deg,#e0f7ff 0%,#b8ecff 15%,#7dd8ff 40%,#4fc3f7 70%,#29b6f6 100%);min-height:100vh;color:#0a2540;max-width:480px;margin:0 auto;padding:0 0 120px}
+.top{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,180,216,0.15);position:sticky;top:0;z-index:20;box-shadow:0 4px 24px rgba(0,180,216,0.12)}
+.logo{font-size:28px;font-weight:900;color:#0077b6;letter-spacing:-0.5px}
+.btn{font-size:12px;border:1px solid rgba(0,180,216,0.2);border-radius:999px;padding:8px 14px;background:rgba(255,255,255,0.9);color:#0077b6;font-weight:700;cursor:pointer;backdrop-filter:blur(10px)}
+.btn:hover{background:#0077b6;color:#fff}
+.sel{background:rgba(255,255,255,0.9);border:1px solid rgba(0,180,216,0.2);border-radius:12px;padding:12px;color:#0a2540;font-weight:700;width:100%;backdrop-filter:blur(10px)}
+.saldo{padding:14px 20px;display:flex;gap:8px}
+.card{flex:1;background:rgba(255,255,255,0.9);border:1px solid rgba(255,255,255,0.6);border-radius:20px;padding:12px;backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,119,182,0.12)}
+.card small{font-size:10px;color:#5a8aa8;display:block;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.card b{font-size:14px;color:#0a2540}
+.sec{padding:0 20px;margin-top:22px}
+.h{font-size:11px;color:#0077b6;font-weight:800;margin-bottom:10px;display:flex;justify-content:space-between;letter-spacing:0.5px;text-transform:uppercase}
+.list{background:rgba(255,255,255,0.88);border-radius:20px;border:1px solid rgba(255,255,255,0.6);overflow:hidden;backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,119,182,0.12)}
+.row{display:flex;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(0,180,216,0.08);align-items:center}
+.row:last-child{border-bottom:none}
+.ico{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#e0f7ff,#b8ecff);border:1px solid rgba(0,180,216,0.15);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0077b6}
+.ico.ok{background:linear-gradient(135deg,#00d4aa,#00b894);border-color:#00b894;color:#fff;box-shadow:0 4px 12px rgba(0,212,170,0.3)}
+.badge{font-size:12px;font-weight:800;padding:6px 12px;border-radius:999px;border:1px solid rgba(0,180,216,0.15);min-width:90px;text-align:right;background:rgba(255,255,255,0.8);color:#0077b6}
+.badge.ok{background:linear-gradient(135deg,#00d4aa,#00b894);border-color:#00b894;color:#fff}
+.del{width:32px;height:32px;border-radius:50%;background:#ff6b6b;color:#fff;border:none;font-weight:900;cursor:pointer;box-shadow:0 2px 8px rgba(255,107,107,0.3)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0077b6;color:#fff;padding:12px 18px;border-radius:999px;font-size:12px;font-weight:700;display:none;z-index:99;max-width:90%;text-align:center;box-shadow:0 8px 24px rgba(0,119,182,0.3)}
+.modal{position:fixed;inset:0;background:rgba(0,119,182,0.3);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+.box{background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.6);border-radius:24px;padding:24px;width:100%;max-width:340px;backdrop-filter:blur(20px);box-shadow:0 20px 60px rgba(0,119,182,0.2)}
+.inp{background:rgba(255,255,255,0.9);border:1px solid rgba(0,180,216,0.2);border-radius:12px;padding:12px;color:#0a2540;width:100%;margin-top:8px}
+.inp::placeholder{color:#8ab4cc}
+.btnSave{width:100%;border:none;border-radius:999px;padding:14px;font-weight:800;margin-top:10px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.1)}
+.green{background:linear-gradient(135deg,#00d4aa,#00b894);color:#fff}.white{background:#fff;color:#0077b6;border:1px solid rgba(0,180,216,0.2)}.red{background:linear-gradient(135deg,#ff6b6b,#ee5a5a);color:#fff}
+.admin{display:none;margin:12px 20px 0;background:rgba(255,255,255,0.9);border:1px solid rgba(255,255,255,0.6);border-radius:24px;overflow:hidden;backdrop-filter:blur(20px);box-shadow:0 12px 40px rgba(0,119,182,0.15)}.admin.show{display:block}
+.tabs{display:flex;gap:4px;padding:12px;background:rgba(224,247,255,0.6);flex-wrap:wrap}.tabs button{flex:1;min-width:70px;font-size:11px;padding:10px;border-radius:999px;border:1px solid rgba(0,180,216,0.15);background:rgba(255,255,255,0.8);color:#5a8aa8;cursor:pointer;font-weight:600}.tabs button.active{background:#0077b6;color:#fff;border-color:#0077b6;box-shadow:0 4px 12px rgba(0,119,182,0.2)}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.admin-col{background:rgba(255,255,255,0.8);border:1px solid rgba(0,180,216,0.12);border-radius:16px;padding:12px}
+.admin-col h4{font-size:10px;color:#0077b6;text-transform:uppercase;margin-bottom:8px;font-weight:800;letter-spacing:0.5px}
+.pull{height:0;overflow:hidden;display:flex;justify-content:center;align-items:center;background:rgba(255,255,255,0.9);transition:.2s;font-size:11px;color:#0077b6;font-weight:700}.pull.show{height:44px;border-bottom:1px solid rgba(0,180,216,0.15)}.pull.sync{height:44px;background:rgba(0,212,170,0.15);color:#00b894}
+.filter-transaksi{background:rgba(255,255,255,0.88);border:1px solid rgba(255,255,255,0.6);border-radius:20px;padding:14px;margin:0 0 12px 0;backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,119,182,0.12)}
+.filter-transaksi .filter-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.filter-transaksi .filter-row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.filter-label{font-size:9px;color:#0077b6;font-weight:800;text-transform:uppercase;margin-bottom:4px;display:block;letter-spacing:0.5px}
+.hint{font-size:10px;color:#5a8aa8;line-height:1.4;margin-top:6px}
+.dup-warn{background:rgba(255,183,0,0.12);border:1px solid rgba(255,183,0,0.3);border-radius:12px;padding:10px;font-size:10px;color:#b77900;margin-bottom:8px}
+.ok-warn{background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.3);border-radius:12px;padding:10px;font-size:10px;color:#008a6a;margin-bottom:8px}
+.diag{background:rgba(255,255,255,0.7);border:1px dashed rgba(0,180,216,0.2);border-radius:12px;padding:10px;font-size:9px;color:#5a8aa8;margin-top:8px;font-family:monospace;white-space:pre-wrap}
+</style></head><body>
+<div id="pull" class="pull"><span id="pullTxt">↓ Tarik untuk sync</span></div>
+<div class="top"><div class="logo">KAS EF</div><button class="btn" id="loginBtn" onclick="toggleLogin()">Login</button></div>
+<div class="saldo"><div class="card"><small>total saldo</small><b id="saldo">Rp 0</b></div><div class="card"><small>masuk</small><b id="masuk" style="color:#00b894">Rp 0</b></div><div class="card"><small>keluar</small><b id="keluar" style="color:#ff6b6b">Rp 0</b></div></div>
+
+<div class="admin" id="adminPanel">
+<div class="tabs"><button id="tWA" class="active" onclick="tab('WA')">Batch</button><button id="tMasuk" onclick="tab('Masuk')">Masuk</button><button id="tKeluar" onclick="tab('Keluar')">Keluar</button><button id="tShare" onclick="tab('Share')">Share</button><button id="tURL" onclick="tab('URL')">URL</button></div>
+<div id="pWA" style="padding:14px">
+<div class="admin-grid">
+<div class="admin-col">
+<h4>📋 Batch 17 - Aqua</h4>
+<textarea id="waText" class="inp" rows="10">27/08/2026
+
+Nia tf mandiri
+Aditya tf mandiri
+Anisa tf BCA
+Aaf tf BCA
+Syarif tf BCA
+Budi tf BCA
+Topik tf BCA
+Yudi tf BCA
+Heru tf BCA
+Dozen tf BCA
+Putri tf BCA
+Arief tf BCA
+Anah tf BCA
+Supriyadi tf BCA
+Zaelani tf BCA
+Nely tf BCA
+Eka tf BCA</textarea>
+<div class="hint">Aqua minimalis modern</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px"><button class="btn" style="background:#0077b6;color:#fff" onclick="pasteWA()">Paste</button><button class="btn" onclick="clearWA()">Clear</button></div>
+<button class="btnSave green" onclick="parseWA()">1. Deteksi + Cek Dobel</button>
+<button class="btnSave white" onclick="saveBatch()" id="btnBatch" style="display:none">2. Simpan (Anti Dobel)</button>
+<button class="btnSave red" onclick="saveBatchForce()" id="btnForce" style="display:none">FORCE 17</button>
+<div id="diag" class="diag">Klik Deteksi</div>
+</div>
+<div class="admin-col">
+<h4>👁️ Preview</h4>
+<div id="dupInfo"></div>
+<div id="preview" style="display:none"><div id="prevList" style="background:rgba(255,255,255,0.7);border:1px solid rgba(0,180,216,0.15);border-radius:12px;padding:10px;font-size:11px;max-height:260px;overflow:auto;color:#0a2540"></div></div>
+<div id="previewEmpty" style="font-size:11px;color:#5a8aa8;text-align:center;padding:20px 0">Paste → Deteksi<br>Biru Aqua modern</div>
+</div>
+</div>
+</div>
+<div id="pMasuk" style="display:none;padding:14px"><div class="admin-grid"><div class="admin-col"><h4>📅 Tanggal & Anggota</h4><input type="date" id="dateMasuk" class="inp" style="margin:0"><select id="memberMasuk" class="inp" style="margin:8px 0 0 0"></select></div><div class="admin-col"><h4>💰 Nominal & Bank</h4><input type="number" id="amountMasuk" class="inp" style="margin:0" value="100000"><select id="bankMasuk" class="inp" style="margin:8px 0 0 0"><option>BCA</option><option>MANDIRI</option><option>CASH</option></select></div></div><button class="btnSave green" onclick="saveMasuk()">Simpan (Local+Sheet)</button></div>
+<div id="pKeluar" style="display:none;padding:14px"><div class="admin-grid"><div class="admin-col"><h4>📅 & Kategori</h4><input type="date" id="dateKeluar" class="inp" style="margin:0"><input type="text" id="catKeluar" class="inp" placeholder="Kategori"></div><div class="admin-col"><h4>💸 Nominal & Bank</h4><input type="number" id="amountKeluar" class="inp" style="margin:0" placeholder="Nominal"><select id="bankKeluar" class="inp" style="margin:8px 0 0 0"><option>BCA</option><option>MANDIRI</option><option>CASH</option></select></div></div><input type="text" id="descKeluar" class="inp" placeholder="Deskripsi"><button class="btnSave red" onclick="saveKeluar()">Simpan Keluar</button></div>
+<div id="pShare" style="display:none;padding:14px"><div id="waPreview" style="background:rgba(255,255,255,0.8);border:1px solid rgba(0,180,216,0.15);border-radius:12px;padding:12px;white-space:pre-wrap;font-size:11px;color:#0a2540"></div><button class="btnSave green" onclick="shareWA()">Share WA</button><button class="btn" style="width:100%;margin-top:8px;padding:12px" onclick="copyWA()">Copy</button></div>
+<div id="pURL" style="display:none;padding:14px"><div class="admin-grid"><div class="admin-col"><h4>🔗 URL Sheet</h4><input id="urlInput" class="inp" style="margin:0;font-size:10px;font-family:monospace" placeholder="https://script.google.com/macros/s/.../exec"><button class="btn" style="width:100%;margin-top:8px;padding:8px" onclick="testSheet()">🧪 Test Sheet</button></div><div class="admin-col"><h4>⚙️ Aksi</h4><button class="btnSave white" onclick="saveURL()" style="margin:0">💾 Simpan URL</button><button class="btn" style="width:100%;margin-top:8px;padding:12px" onclick="syncNow()">🔄 Sync</button><button class="btn" style="width:100%;margin-top:8px;padding:8px" onclick="clearLocal()">🗑️ Reset</button></div></div><div style="font-size:9px;color:#0077b6;margin-top:10px;word-break:break-all;background:rgba(255,255,255,0.7);padding:8px;border-radius:8px" id="urlInfo"></div><div id="testResult" class="diag" style="display:none"></div></div>
+</div>
+
+<div class="sec"><div class="h"><span>Anggota - 17 Orang</span><span id="infoA">0/17 pernah bayar</span></div><div class="list" id="listA"></div></div>
+
+<div class="sec">
+<div class="h"><span>Transaksi - Terbaru ke Terlama</span><span id="infoT">0 trx</span></div>
+<div class="filter-transaksi">
+<div class="filter-row">
+<div><span class="filter-label">Bulan</span><select id="filterBulanTx" class="sel" style="padding:10px;font-size:12px" onchange="renderTx()"></select></div>
+<div><span class="filter-label">Tahun (2026-2036)</span><select id="filterTahunTx" class="sel" style="padding:10px;font-size:12px" onchange="renderTx()"></select></div>
+</div>
+<div class="filter-row2">
+<div><span class="filter-label">Jenis</span><select id="filterJenis" class="sel" style="padding:8px;font-size:11px" onchange="renderTx()"><option value="all">Semua</option><option value="masuk">Masuk</option><option value="keluar">Keluar</option></select></div>
+<div><span class="filter-label">Cari</span><input type="text" id="searchTx" class="sel" style="padding:8px;font-size:11px" placeholder="Nama..." oninput="renderTx()"></div>
+<div><span class="filter-label">Aksi</span><button class="btn" style="width:100%;padding:10px;background:#0077b6;color:#fff" onclick="resetFilterTx()">Reset</button></div>
+</div>
+</div>
+<div class="list" id="listT"></div>
+</div>
+
+<div class="sec"><div class="h"><span>Rekening</span></div><div class="list" id="listB"></div></div>
+
+<div id="loginM" class="modal"><div class="box"><div style="font-weight:900;text-align:center;color:#0077b6">Login Admin</div><input id="pass" type="password" class="inp" placeholder="Password" style="text-align:center"><div id="passErr" style="font-size:10px;color:#ff6b6b;text-align:center;margin-top:6px;display:none">Salah</div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn" style="flex:1;padding:12px" onclick="closeLogin()">Batal</button><button class="btn" style="flex:1;padding:12px;background:#0077b6;color:#fff" onclick="doLogin()">Masuk</button></div></div></div>
+<div id="delM" class="modal"><div class="box" style="text-align:center"><div style="font-size:32px">🗑️</div><div id="delName" style="font-weight:900;margin-top:8px;color:#0077b6"></div><div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1;padding:12px" onclick="closeDel()">Batal</button><button class="btn" style="flex:1;padding:12px;background:#ff6b6b;color:#fff" onclick="doDel()">Hapus</button></div></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+var MEMBERS=["Nia","Aditya","Anisa","Aaf","Syarif","Budi","Topik","Yudi","Heru","Dozen","Putri","Arief","Anah","Supriyadi","Zaelani","Nely","Eka"];
+var MAP={"opik":"Topik","neli":"Nely","nely":"Nely","nelly":"Nely","pak heru":"Heru"};
+var MONTHS_ID=["januari","februari","maret","april","mei","juni","juli","agustus","september","oktober","november","desember"];
+var MONTHS_SHORT=["jan","feb","mar","apr","mei","jun","jul","agu","sep","okt","nov","des"];
+function norm(n){ if(!n) return ""; var k=n.toLowerCase().trim().replace(/^pak\s+/,''); if(MAP[k]) return MAP[k]; for(var i=0;i<MEMBERS.length;i++){ if(MEMBERS[i].toLowerCase()===k) return MEMBERS[i]; } return n.charAt(0).toUpperCase()+n.slice(1).toLowerCase(); }
+var KEY="kas-ef-final-v1"; var ADMIN="kas-ef-admin-v1"; var URL_KEY="kas-ef-url-v1";
+var txs=[]; var cur="2026-08"; var batch=[]; var batchRawAll=[]; var batchDup=[]; var batchExist=[]; var delId=null; var isSync=false;
+
+function getURL(){ return localStorage.getItem(URL_KEY)||""; }
+function setURLInfo(){ var u=getURL(); document.getElementById('urlInfo').textContent=u ? "URL aktif: "+u : "Belum ada URL - set di tab URL"; document.getElementById('urlInput').value=u; }
+function load(){ try{ var s=localStorage.getItem(KEY); if(s){ var d=JSON.parse(s); if(Array.isArray(d)) txs=d; } }catch(e){} }
+function saveLocal(){ try{ localStorage.setItem(KEY, JSON.stringify(txs)); return true; }catch(e){ toast("❌ Local penuh"); return false; } }
+function toast(m){ var e=document.getElementById('toast'); e.textContent=m; e.style.display='block'; setTimeout(()=>e.style.display='none',4000); }
+function fmt(n){ return new Intl.NumberFormat('id-ID').format(Math.abs(n)||0); }
+function mName(ym){ if(!ym||!ym.includes('-')) return ym; var a=ym.split('-'); var m=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]; return m[parseInt(a[1])-1]+" "+a[0]; }
+function ymFromDate(d){ if(!d) return cur; var dd=new Date(d); if(isNaN(dd)) return cur; return dd.getFullYear()+"-"+String(dd.getMonth()+1).padStart(2,'0'); }
+
+function parseBulanTahunFromText(text){
+  var low=text.toLowerCase();
+  var pattern1 = new RegExp("(" + MONTHS_ID.join("|") + ")\\s*(20\\d{2})", "i");
+  var m1 = low.match(pattern1);
+  if(m1){ var bulanIdx = MONTHS_ID.indexOf(m1[1].toLowerCase())+1; var tahun = m1[2]; return {bulan:String(bulanIdx).padStart(2,'0'), tahun:tahun, ym:tahun+"-"+String(bulanIdx).padStart(2,'0')}; }
+  return null;
+}
+function parseTanggalFromLine(line){
+  var low=line.toLowerCase();
+  var reSlash = line.match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](20\d{2})/);
+  if(reSlash){ var d=String(reSlash[1]).padStart(2,'0'); var m=String(reSlash[2]).padStart(2,'0'); var y=reSlash[3]; return {date:y+"-"+m+"-"+d, ym:y+"-"+m, day:d, month:m, year:y}; }
+  var reLong = new RegExp("(\\d{1,2})\\s+(" + MONTHS_ID.join("|") + "|" + MONTHS_SHORT.join("|") + ")\\s*(20\\d{2})", "i");
+  var mLong = low.match(reLong);
+  if(mLong){ var d=String(mLong[1]).padStart(2,'0'); var bulanStr=mLong[2].toLowerCase(); var bulanIdx = MONTHS_ID.indexOf(bulanStr); if(bulanIdx===-1) bulanIdx = MONTHS_SHORT.indexOf(bulanStr); if(bulanIdx!==-1){ var m=String(bulanIdx+1).padStart(2,'0'); var y=mLong[3]; return {date:y+"-"+m+"-"+d, ym:y+"-"+m, day:d, month:m, year:y}; } }
+  var reBulanTahun = new RegExp("(" + MONTHS_ID.join("|") + ")\\s*(20\\d{2})", "i");
+  var mBT = low.match(reBulanTahun);
+  if(mBT){ var bulanIdx = MONTHS_ID.indexOf(mBT[1].toLowerCase())+1; var y=mBT[2]; var m=String(bulanIdx).padStart(2,'0'); return {date:y+"-"+m+"-27", ym:y+"-"+m, day:"27", month:m, year:y, onlyMonthYear:true}; }
+  return null;
+}
+
+function init(){
+  var mem=document.getElementById('memberMasuk'); mem.innerHTML=MEMBERS.map(m=>`<option value="${m}">${m}</option>`).join('');
+  var today=new Date().toISOString().slice(0,10); document.getElementById('dateMasuk').value=today; document.getElementById('dateKeluar').value=today;
+  var fb=document.getElementById('filterBulanTx');
+  var monthsTx=["Semua Bulan","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  fb.innerHTML=monthsTx.map((m,i)=>{ if(i===0) return `<option value="all">Semua Bulan</option>`; var mm=String(i).padStart(2,'0'); return `<option value="${mm}">${m}</option>`; }).join('');
+  var fy=document.getElementById('filterTahunTx');
+  var yearsTx=["Semua Tahun"]; for(var y=2026;y<=2036;y++) yearsTx.push(y);
+  fy.innerHTML=yearsTx.map(y=>{ if(y==="Semua Tahun") return `<option value="all">Semua Tahun</option>`; return `<option value="${y}">${y}</option>`; }).join('');
+  fb.value='08'; fy.value='2026';
+  setURLInfo();
+}
+function resetFilterTx(){ document.getElementById('filterBulanTx').value='all'; document.getElementById('filterTahunTx').value='all'; document.getElementById('filterJenis').value='all'; document.getElementById('searchTx').value=''; renderTx(); }
+
+function toggleLogin(){ if(localStorage.getItem(ADMIN)==='1'){ localStorage.setItem(ADMIN,'0'); document.getElementById('loginBtn').textContent='Login'; document.getElementById('adminPanel').classList.remove('show'); render(); }else{ document.getElementById('loginM').style.display='flex'; document.getElementById('pass').value=''; document.getElementById('passErr').style.display='none'; document.getElementById('pass').focus(); } }
+function closeLogin(){ document.getElementById('loginM').style.display='none'; }
+function doLogin(){ var p=document.getElementById('pass').value.trim().toLowerCase(); if(p==='askief'){ localStorage.setItem(ADMIN,'1'); closeLogin(); document.getElementById('loginBtn').textContent='Admin ✓'; document.getElementById('adminPanel').classList.add('show'); toast('Login berhasil'); render(); }else{ document.getElementById('passErr').style.display='block'; } }
+document.getElementById('pass').addEventListener('keypress',e=>{ if(e.key==='Enter') doLogin(); });
+
+function tab(t){ ['WA','Masuk','Keluar','Share','URL'].forEach(x=>{ document.getElementById('t'+x).classList.remove('active'); document.getElementById('p'+x).style.display='none'; }); document.getElementById('t'+t).classList.add('active'); document.getElementById('p'+t).style.display='block'; if(t==='Share') updateShare(); if(t==='URL') setURLInfo(); }
+function pasteWA(){ if(navigator.clipboard && navigator.clipboard.readText){ navigator.clipboard.readText().then(t=>{ document.getElementById('waText').value=t; }); } }
+function clearWA(){ document.getElementById('waText').value=''; document.getElementById('preview').style.display='none'; document.getElementById('previewEmpty').style.display='block'; document.getElementById('dupInfo').innerHTML=''; document.getElementById('diag').textContent='Klik Deteksi'; document.getElementById('btnBatch').style.display='none'; document.getElementById('btnForce').style.display='none'; batch=[]; batchRawAll=[]; batchDup=[]; batchExist=[]; }
+function clearLocal(){ if(confirm('Hapus semua data lokal?')){ localStorage.removeItem(KEY); txs=[]; render(); toast('Local dihapus'); } }
+function testSheet(){
+  var urlBase=getURL(); if(!urlBase){ toast('Set URL dulu'); return; }
+  var testId='t-test-'+Date.now();
+  var url=urlBase+"?action=addTransaksi&ID="+testId+"&Tanggal=2026-08-27&Anggota=TEST&Kategori=BCA&Nominal=1000&t="+Date.now();
+  document.getElementById('testResult').style.display='block';
+  document.getElementById('testResult').textContent="Kirim TEST ke:\n"+url;
+  var img=new Image(); img.src=url;
+  fetch(url,{mode:'no-cors'}).then(()=>{ document.getElementById('testResult').textContent+="\n✅ terkirim"; }).catch(e=>{ document.getElementById('testResult').textContent+="\n❌ "+e; });
+  setTimeout(()=>{ document.getElementById('testResult').textContent+="\n\nCek Sheet ada TEST? Jika ada URL OK."; }, 2000);
+}
+
+function parseWA(){
+  var text=document.getElementById('waText').value.trim(); if(!text){ toast('Paste dulu'); return; }
+  var lines=text.split('\n').map(s=>s.trim()).filter(Boolean);
+  var globalDateObj = null; var globalBT = null; var globalDateLineIndex = -1;
+  for(var gi=0; gi<lines.length; gi++){
+    var gl = lines[gi];
+    if(/^\s*\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]20\d{2}\s*$/.test(gl)){
+      var parsed = parseTanggalFromLine(gl); if(parsed){ globalDateObj = parsed; globalDateLineIndex = gi; break; }
+    }
+    if(new RegExp("^\\s*(" + MONTHS_ID.join("|") + ")\\s*(20\\d{2})\\s*$","i").test(gl)){
+      var parsedBT = parseBulanTahunFromText(gl); if(parsedBT){ globalBT = parsedBT; globalDateObj = {date:parsedBT.ym+"-27", ym:parsedBT.ym}; globalDateLineIndex = gi; break; }
+    }
+  }
+  if(!globalDateObj){ globalBT = parseBulanTahunFromText(text); if(globalBT){ globalDateObj = {date:globalBT.ym+"-27", ym:globalBT.ym}; } }
+  
+  var rawBatch=[];
+  lines.forEach((l, idx)=>{
+    if(idx===globalDateLineIndex) return;
+    var low=l.toLowerCase();
+    if(low.includes('kas ef') && (low.includes('20') || MONTHS_ID.some(m=>low.includes(m)))){ var bt = parseBulanTahunFromText(l); if(bt && l.split(' ').length<=5) return; }
+    if(low.startsWith('masuk rp') || low.startsWith('keluar rp') || low.includes('bca 683') || low.includes('mandiri 157') || low.includes('shorturl') || low.includes('https://')){ return; }
+    if(/^\s*\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]20\d{2}\s*$/.test(l)) return;
+    var lowL=l.toLowerCase(); var bank='BCA'; if(lowL.includes('mandiri')) bank='MANDIRI'; else if(lowL.includes('cash')) bank='CASH';
+    var tglInfo = parseTanggalFromLine(l);
+    var dateStr, ymStr;
+    if(tglInfo && !tglInfo.onlyMonthYear){ dateStr=tglInfo.date; ymStr=tglInfo.ym; } else if(tglInfo && tglInfo.onlyMonthYear){ dateStr=tglInfo.date; ymStr=tglInfo.ym; } else if(globalDateObj){ dateStr=globalDateObj.date; ymStr=globalDateObj.ym; } else if(globalBT){ dateStr=globalBT.ym+"-27"; ymStr=globalBT.ym; } else { dateStr=cur+"-27"; ymStr=cur; }
+    var rawName=l;
+    rawName=rawName.replace(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](20\d{2})/g,'').replace(new RegExp("\\d{1,2}\\s+(" + MONTHS_ID.join("|") + "|" + MONTHS_SHORT.join("|") + ")\\s*(20\\d{2})?","gi"),'').replace(new RegExp("(" + MONTHS_ID.join("|") + ")\\s*(20\\d{2})?","gi"),'');
+    rawName=rawName.split(/tf|cash|bca|mandiri/i)[0].trim().replace(/[^a-zA-Z ]/g,'').trim();
+    if(!rawName) rawName=l.split(' ')[0].replace(/[^a-zA-Z]/g,'');
+    if(!rawName) return;
+    rawBatch.push({name:norm(rawName), bank:bank, raw:l, date:dateStr, ym:ymStr, tglInfo:tglInfo||globalDateObj});
+  });
+
+  batchRawAll = rawBatch.slice();
+  var seen = {}; var existMap = {};
+  txs.forEach(t=>{ if(t.jenis==='masuk'){ var k=t.memberName+"|"+t.ym; existMap[k]=true; } });
+  batch=[]; batchDup=[]; batchExist=[];
+  rawBatch.forEach(item=>{
+    var key=item.name+"|"+item.ym;
+    if(existMap[key]){ batchExist.push(item); return; }
+    if(seen[key]){ batchDup.push(item); return; }
+    seen[key]=true; batch.push(item);
+  });
+
+  var diagText = `DIAGNOSA: ${rawBatch.length} raw | Siap ${batch.length} | Ada ${batchExist.length} | Dobel ${batchDup.length} | Tgl ${globalDateObj ? globalDateObj.date : cur}`;
+  document.getElementById('diag').textContent=diagText;
+  document.getElementById('preview').style.display='block'; document.getElementById('previewEmpty').style.display='none';
+  document.getElementById('btnBatch').style.display='block'; document.getElementById('btnForce').style.display='block';
+  
+  var warnHtml="";
+  if(globalDateObj){ warnHtml+=`<div class="ok-warn">📅 ${globalDateObj.date} (${mName(globalDateObj.ym)})</div>`; }
+  if(batchExist.length>0){ warnHtml+=`<div class="dup-warn">⛔ Sudah ada ${batchExist.length} - pakai FORCE</div>`; }
+  if(batch.length>0){ warnHtml+=`<div class="ok-warn">✅ Siap ${batch.length} - +Rp ${fmt(batch.length*100000)}</div>`; }
+  document.getElementById('dupInfo').innerHTML=warnHtml;
+  
+  document.getElementById('prevList').innerHTML=batch.map((b,i)=>`${i+1}. ${b.raw} → <b>${b.name}</b> • ${b.bank} • ${b.date}`).join('<br><br>') || '<span style="color:#ff9999">Semua dobel</span>';
+  document.getElementById('btnBatch').textContent=batch.length>0 ? `Simpan ${batch.length}` : `Tidak ada`;
+  document.getElementById('btnForce').textContent=`FORCE ${batchRawAll.length}`;
+}
+
+function sendToSheet(params, cb){
+  var urlBase=getURL(); if(!urlBase){ if(cb) cb({}); return; }
+  var qs = Object.keys(params).map(k=>k+"="+encodeURIComponent(params[k])).join("&");
+  var url = urlBase+"?"+qs+"&t="+Date.now();
+  try{ if(navigator.sendBeacon){ navigator.sendBeacon(url); } }catch(e){}
+  try{ var img=new Image(); img.src=url; }catch(e){}
+  try{ fetch(url,{mode:'no-cors', keepalive:true}); }catch(e){}
+  if(cb) setTimeout(()=>cb({}), 200);
+}
+
+function saveBatch(){
+  if(!batch.length){ toast('Tidak ada'); return; }
+  var total=batch.length; var now=Date.now();
+  batch.forEach((it,i)=>{
+    var id='t-'+now+'-'+i+'-'+Math.random().toString(36).slice(2,4);
+    txs.push({id:id, date:it.date, ym:it.ym, memberName:it.name, amount:100000, bank:it.bank, jenis:'masuk'});
+    sendToSheet({action:"addTransaksi", ID:id, Tanggal:it.date, Anggota:it.name, Kategori:it.bank+" | Iuran "+it.name, Nominal:100000}, null);
+  });
+  if(saveLocal()){ render(); toast(`✅ ${total} masuk +Rp ${fmt(total*100000)}`); clearWA(); }
+}
+
+function saveBatchForce(){
+  if(!batchRawAll.length){ toast('Tidak ada'); return; }
+  var total=batchRawAll.length;
+  if(!confirm(`FORCE ${total} walau dobel?`)) return;
+  var now=Date.now();
+  batchRawAll.forEach((it,i)=>{
+    var id='t-'+now+'-force-'+i+'-'+Math.random().toString(36).slice(2,4);
+    txs.push({id:id, date:it.date, ym:it.ym, memberName:it.name, amount:100000, bank:it.bank, jenis:'masuk'});
+    sendToSheet({action:"addTransaksi", ID:id, Tanggal:it.date, Anggota:it.name, Kategori:it.bank+" | Iuran "+it.name+" | FORCE", Nominal:100000}, null);
+  });
+  if(saveLocal()){ render(); toast(`⚠️ FORCE ${total} masuk`); clearWA(); }
+}
+
+function saveMasuk(){
+  var date=document.getElementById('dateMasuk').value||cur+"-27"; var member=document.getElementById('memberMasuk').value; var amount=Number(document.getElementById('amountMasuk').value); var bank=document.getElementById('bankMasuk').value;
+  if(!member||!amount){ toast('Lengkapi'); return; }
+  var ym=ymFromDate(date);
+  var exists = txs.some(t=>t.jenis==='masuk' && t.memberName===norm(member) && t.ym===ym);
+  if(exists){ if(!confirm(`${member} sudah bayar di ${mName(ym)} - tetap simpan?`)) return; }
+  var id='t-'+Date.now(); txs.push({id:id, date:date, ym:ym, memberName:norm(member), amount:amount, bank:bank, jenis:'masuk'}); if(saveLocal()){ render(); toast('Tersimpan ✓'); sendToSheet({action:"addTransaksi", ID:id, Tanggal:date, Anggota:member, Kategori:bank, Nominal:amount}, null); }
+}
+function saveKeluar(){
+  var date=document.getElementById('dateKeluar').value||cur+"-27"; var cat=document.getElementById('catKeluar').value||'Pengeluaran'; var amount=Number(document.getElementById('amountKeluar').value); var bank=document.getElementById('bankKeluar').value;
+  if(!amount){ toast('Isi nominal'); return; }
+  var id='t-keluar-'+Date.now(); txs.push({id:id, date:date, ym:ymFromDate(date), memberName:cat, amount:amount, bank:bank, jenis:'keluar'}); if(saveLocal()){ render(); toast('Keluar ✓'); sendToSheet({action:"addTransaksi", ID:id, Tanggal:date, Anggota:cat, Kategori:bank+" | KELUAR", Nominal:"-"+amount}, null); }
+}
+function askDel(id,name){ if(localStorage.getItem(ADMIN)!=='1'){ toggleLogin(); return; } delId=id; document.getElementById('delName').textContent='Hapus '+name+'?'; document.getElementById('delM').style.display='flex'; }
+function closeDel(){ document.getElementById('delM').style.display='none'; delId=null; }
+function doDel(){ if(!delId) return; txs=txs.filter(t=>t.id!==delId); if(saveLocal()){ render(); closeDel(); toast('Terhapus ✓'); sendToSheet({action:"deleteTransaksi", ID:delId}, null); } delId=null; }
+function saveURL(){ var u=document.getElementById('urlInput').value.trim(); if(!u.includes('/exec')){ toast('URL harus /exec'); return; } localStorage.setItem(URL_KEY, u); setURLInfo(); toast('URL disimpan'); testSheet(); }
+function syncNow(){
+  var urlBase=getURL(); if(!urlBase){ toast('Set URL dulu'); return; }
+  if(isSync) return; isSync=true;
+  var pull=document.getElementById('pull'); var txt=document.getElementById('pullTxt');
+  pull.className='pull sync show'; txt.textContent='⏳ Sinkron...';
+  fetch(urlBase+"?action=getData&t="+Date.now(),{cache:"no-store"})
+  .then(r=>r.json())
+  .then(d=>{ var list=d.transaksi||d.data||[]; if(list.length>0){ txs=list.map(x=>({id:String(x.ID||x.id), date:String(x.Tanggal||'').slice(0,10), ym:ymFromDate(x.Tanggal), memberName:norm(String(x.Anggota||'')), amount:parseInt(String(x.Nominal||0).replace(/[^0-9]/g,''))||0, bank:String(x.Kategori||'').toUpperCase().includes('MANDIRI')?'MANDIRI':String(x.Kategori||'').toUpperCase().includes('CASH')?'CASH':'BCA', jenis:String(x.Kategori||'').toUpperCase().includes('KELUAR')||String(x.Nominal).includes('-')?'keluar':'masuk'})).filter(x=>x.memberName); saveLocal(); } pull.className='pull'; isSync=false; render(); toast('Sync OK: '+txs.length); })
+  .catch(e=>{
+    var cb='cb_'+Date.now(); window[cb]=function(d){ try{ var list=d.transaksi||d.data||[]; if(list.length>0){ txs=list.map(x=>({id:String(x.ID||x.id), date:String(x.Tanggal||'').slice(0,10), ym:ymFromDate(x.Tanggal), memberName:norm(String(x.Anggota||'')), amount:parseInt(String(x.Nominal||0).replace(/[^0-9]/g,''))||0, bank:String(x.Kategori||'').toUpperCase().includes('MANDIRI')?'MANDIRI':String(x.Kategori||'').toUpperCase().includes('CASH')?'CASH':'BCA', jenis:String(x.Kategori||'').toUpperCase().includes('KELUAR')||String(x.Nominal).includes('-')?'keluar':'masuk'})).filter(x=>x.memberName); saveLocal(); } }catch(err){} pull.className='pull'; isSync=false; render(); try{ delete window[cb]; }catch(e){} }; var s=document.createElement('script'); s.src=urlBase+"?action=getData&callback="+cb+"&t="+Date.now(); s.onerror=function(){ pull.className='pull'; isSync=false; render(); toast('Gagal sync'); try{ delete window[cb]; }catch(e){} }; document.body.appendChild(s); setTimeout(()=>{ if(isSync){ pull.className='pull'; isSync=false; render(); } }, 5000);
+  });
+}
+var startY=0; var pulling=false;
+document.addEventListener('touchstart',e=>{ if(window.scrollY===0){ startY=e.touches[0].pageY; pulling=true; } },{passive:true});
+document.addEventListener('touchmove',e=>{ if(!pulling) return; var curY=e.touches[0].pageY; var diff=curY-startY; if(diff>0 && window.scrollY===0){ var p=document.getElementById('pull'); var t=document.getElementById('pullTxt'); if(diff<80){ p.className='pull show'; t.textContent='↓ Tarik untuk sync'; }else{ p.className='pull show'; t.textContent='↑ Lepas untuk sync'; } } },{passive:true});
+document.addEventListener('touchend',e=>{ if(!pulling) return; pulling=false; var p=document.getElementById('pull'); var t=document.getElementById('pullTxt'); if(p.classList.contains('show')){ if(t.textContent.includes('Lepas')) syncNow(); else p.className='pull'; } });
+
+function getShareText(){ var f=txs.filter(t=>t.jenis!=='keluar'); var ms=f.reduce((s,t)=>s+t.amount,0); var k=txs.filter(t=>t.jenis==='keluar'); var ks=k.reduce((s,t)=>s+t.amount,0); var list=f.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).map(t=>`${t.memberName} tf ${t.bank.toLowerCase()} ${t.date} ${mName(t.ym)}`).join('\n'); return `*KAS EF - ${mName(cur)}*\n\n${list}\n\nMasuk Rp ${fmt(ms)} Keluar Rp ${fmt(ks)} Saldo Rp ${fmt(ms-ks)}`; }
+function updateShare(){ document.getElementById('waPreview').textContent=getShareText(); }
+function copyWA(){ navigator.clipboard.writeText(getShareText()).then(()=>toast('Disalin')); }
+function shareWA(){ window.open("https://wa.me/?text="+encodeURIComponent(getShareText()),'_blank'); }
+
+function render(){
+  var masukAll=txs.filter(t=>t.jenis!=='keluar').reduce((s,t)=>s+t.amount,0);
+  var keluarAll=txs.filter(t=>t.jenis==='keluar').reduce((s,t)=>s+t.amount,0);
+  document.getElementById('saldo').textContent='Rp '+fmt(masukAll-keluarAll);
+  document.getElementById('masuk').textContent='Rp '+fmt(masukAll);
+  document.getElementById('keluar').textContent='Rp '+fmt(keluarAll);
+  var mapAll={}; txs.filter(t=>t.jenis!=='keluar').forEach(t=>{ mapAll[t.memberName]=(mapAll[t.memberName]||0)+t.amount; });
+  var totalLunas = Object.keys(mapAll).length;
+  document.getElementById('infoA').textContent=totalLunas+'/'+MEMBERS.length+' pernah bayar';
+  document.getElementById('titleA').textContent='Anggota - 17 Orang';
+  document.getElementById('listA').innerHTML=MEMBERS.map(name=>{
+    var total=mapAll[name]||0; var lunas = total>0;
+    return `<div class="row"><div style="display:flex;gap:10px;align-items:center"><div class="ico ${lunas?'ok':''}">${lunas?'✓':'✗'}</div><div><div style="font-weight:600">${name}</div><div style="font-size:11px;color:#5a8aa8">${lunas?'Total Rp '+fmt(total):'Belum bayar'}</div></div></div><div class="badge ${lunas?'ok':''}">Rp ${fmt(total)}</div></div>`;
+  }).join('');
+  document.getElementById('listB').innerHTML=`<div class="row"><div style="display:flex;gap:10px;align-items:center"><div class="ico">BCA</div><div><div style="font-size:11px;color:#5a8aa8">BCA • Eka Iswanto</div><div style="font-weight:700;color:#0a2540">6830747280</div></div></div><button class="btn" onclick="navigator.clipboard.writeText('6830747280');toast('Disalin')">COPY</button></div><div class="row"><div style="display:flex;gap:10px;align-items:center"><div class="ico">MAN</div><div><div style="font-size:11px;color:#5a8aa8">MANDIRI • Eka Iswanto</div><div style="font-weight:700;color:#0a2540">1570005764080</div></div></div><button class="btn" onclick="navigator.clipboard.writeText('1570005764080');toast('Disalin')">COPY</button></div>`;
+  if(localStorage.getItem(ADMIN)==='1'){ document.getElementById('loginBtn').textContent='Admin ✓'; document.getElementById('adminPanel').classList.add('show'); }else{ document.getElementById('loginBtn').textContent='Login'; document.getElementById('adminPanel').classList.remove('show'); }
+  updateShare();
+  renderTx();
+}
+
+function renderTx(){
+  var fBulan=document.getElementById('filterBulanTx').value;
+  var fTahun=document.getElementById('filterTahunTx').value;
+  var fJenis=document.getElementById('filterJenis').value;
+  var fSearch=document.getElementById('searchTx').value.toLowerCase().trim();
+  var filtered = txs.slice();
+  if(fBulan!=='all'){ filtered = filtered.filter(t=>{ var m = t.ym ? t.ym.split('-')[1] : (t.date ? t.date.slice(5,7) : ''); return m===fBulan; }); }
+  if(fTahun!=='all'){ filtered = filtered.filter(t=>{ var y = t.ym ? t.ym.split('-')[0] : (t.date ? t.date.slice(0,4) : ''); return y===fTahun; }); }
+  if(fJenis!=='all'){ filtered = filtered.filter(t=>t.jenis===fJenis); }
+  if(fSearch){ filtered = filtered.filter(t=>t.memberName.toLowerCase().includes(fSearch) || t.bank.toLowerCase().includes(fSearch)); }
+  filtered.sort((a,b)=>{ var da = new Date(a.date).getTime(); if(isNaN(da)) da=0; var db = new Date(b.date).getTime(); if(isNaN(db)) db=0; if(db!==da) return db-da; var ia=0, ib=0; try{ var ma = a.id.match(/(\d{13,})/); if(ma) ia=parseInt(ma[0]); var mb = b.id.match(/(\d{13,})/); if(mb) ib=parseInt(mb[0]); }catch(e){} return ib-ia; });
+  document.getElementById('infoT').textContent=filtered.length+' trx';
+  if(filtered.length===0){ document.getElementById('listT').innerHTML=`<div class="row"><div style="font-size:12px;color:#5a8aa8">Tidak ada transaksi</div></div>`; return; }
+  document.getElementById('listT').innerHTML=filtered.map(t=>{
+    var del=localStorage.getItem(ADMIN)==='1'?`<button class="del" onclick="askDel('${t.id}','${t.memberName}')">×</button>`:'';
+    var ymLabel = t.ym ? `${mName(t.ym)}` : '';
+    return `<div class="row"><div style="display:flex;gap:10px;align-items:center"><div class="ico ${t.jenis==='keluar'?'':'ok'}">${t.jenis==='keluar'?'−':'+'}</div><div><div style="font-weight:600;color:#0a2540">${t.memberName} • ${t.bank} <span style="font-size:10px;color:#5a8aa8">• ${ymLabel}</span></div><div style="font-size:11px;color:#5a8aa8">${t.date} • Rp ${fmt(t.amount)}</div></div></div><div style="display:flex;gap:8px;align-items:center"><div style="font-weight:700;font-size:12px;color:#0a2540">${t.jenis==='keluar'?'-':'+'}Rp ${fmt(t.amount)}</div>${del}</div></div>`;
+  }).join('');
+}
+
+load(); init(); render();
+if(getURL()) setTimeout(syncNow, 1500);
+</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
